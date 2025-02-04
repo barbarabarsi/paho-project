@@ -10,8 +10,8 @@ public class Simulator {
 	public static void main(String[] args) {
 		
 		String broker = "tcp://localhost:1883"; 
-		String topic = "labs/test-topic-4";
-	    String messageContent = "Message from my Lab's Paho Mqtt Client";
+		String topic = "labs/new-topic-2";
+	    String messageContent = "Message from my Lab's Paho Mqtt Client - retained flag";
 	    int qos = 0;
 		
 		try {
@@ -37,29 +37,24 @@ public class Simulator {
 	        	 
 	         } catch(MqttException e) { Client.printError(e); }	
 			
-			Thread subscribeThread = new Thread(() -> {
+
+			for (int i = 1; i <= 5; i++) {
+            	publisher.publishMessage(topic, messageContent + " -  Message #" + i, qos, true);
+            }
+			
+			System.out.println("All messages were published.");
+	        
+	        MqttConnectOptions subConnectOptions = new MqttConnectOptions();
+	        subConnectOptions.setCleanSession(true);
+	        
+	        Thread subscribeThread = new Thread(() -> {
 				try {
 					subscriber.subscribeToTopic(topic, qos);
 				} catch (MqttException e) {
 					e.printStackTrace();
 				}
 			});
-			
-			subscriber.subscribeToTopic(topic, qos);
-			subscriber.disconnect();
-			System.out.println("Subscriber disconnected.");
-			
-			for (int i = 1; i <= 5; i++) {
-            	publisher.publishMessage(topic, messageContent + " - HELLO TEST MESSAGE -  Message #" + i, qos, true);
-            }
-			
-			System.out.println("All messages were published.");
 	        
-	        MqttConnectOptions subReconnectOptions = new MqttConnectOptions();
-	        subReconnectOptions.setCleanSession(true);
-	    	
-	        subscriber.connect(subReconnectOptions);
-	        System.out.println("Subscriber reconnected.");
 	        subscribeThread.start();
 	        
 	        try {
