@@ -20,15 +20,18 @@ public class Simulator {
 			Client subscriber = new Client(broker, "myClientID_Sub");
 			
 			try{
-		    	MqttConnectOptions connectOptions = new MqttConnectOptions();
-		    	connectOptions.setCleanSession(true);
+		    	MqttConnectOptions subConnectOptions = new MqttConnectOptions();
+		    	subConnectOptions.setCleanSession(false);
 		    	
-		    	System.out.println("Connecting " + connectOptions + " to Mqtt Broker running at: " + broker);
-		    	publisher.connect(connectOptions);
+		    	MqttConnectOptions pubConnectOptions = new MqttConnectOptions();
+		    	pubConnectOptions.setCleanSession(true);
+		    	
+		    	System.out.println("Connecting " + publisher.getClientId() + " to Mqtt Broker running at: " + broker);
+		    	publisher.connect(pubConnectOptions);
 		    	
 		    	
-		    	System.out.println("Connecting " + connectOptions + " to Mqtt Broker running at: " + broker);
-		    	subscriber.connect(connectOptions);
+		    	System.out.println("Connecting " + subscriber.getClientId()  + " to Mqtt Broker running at: " + broker);
+		    	subscriber.connect(subConnectOptions);
 		    	
 		    	System.out.println("Mqtt Clients sucessfully connected.");
 	        	 
