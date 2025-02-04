@@ -23,6 +23,7 @@ public class Client extends MqttClient {
     	// publish a message
         System.out.println("Mqtt Client: Publishing message: " + messageContent);
         MqttMessage message = new MqttMessage(messageContent.getBytes());
+        //message.setRetained(true);
         
         message.setQos(qos);
         
@@ -35,7 +36,18 @@ public class Client extends MqttClient {
         System.out.println("Mqtt Client: successfully published the message.");
     }
     
-    public void subscribeToTopic(int qos, String topic) throws MqttException {
+    public void subscribeToTopic(String topic, int qos) throws MqttException {
+        
+    	try {
+			subscribe(topic, qos);
+			System.out.println("Mqtt Client Subscriber: successfully subscribed to topic " + topic);
+		} catch (MqttException e) {
+			e.printStackTrace();
+		}
+ 
+    }
+    
+    public void subscribeToTopic(String topic) throws MqttException {
       
     	try {
 			subscribe(topic);

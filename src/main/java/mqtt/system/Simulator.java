@@ -12,7 +12,7 @@ public class Simulator {
 		String broker = "tcp://localhost:1883"; 
 		String topic = "labs/paho-example-topic";
 	    String messageContent = "Message from my Lab's Paho Mqtt Client";
-	    int qos = 0;
+	    int qos = 1;
 		
 		try {
 				
@@ -37,15 +37,18 @@ public class Simulator {
 	        	 
 	         } catch(MqttException e) { Client.printError(e); }	
 		
-			subscriber.subscribeToTopic(qos, topic);
+			subscriber.subscribeToTopic(topic, qos);
+			Thread.sleep(1000);
 			subscriber.disconnect();
 			System.out.println("Subscriber disconnected.");
 			
-	        publisher.publishMessage(topic, messageContent + " - q.4.1", qos);
+	        publisher.publishMessage(topic, messageContent + " - q.4.3", qos);
 	        
 	        subscriber.connect();
+	        subscriber.subscribeToTopic(topic, qos);
 			
-		} catch(MqttException e) { Client.printError(e); }	
+		} catch(MqttException e) { Client.printError(e); 
+		} catch (InterruptedException e) { e.printStackTrace(); }	
 		
 		
 		
