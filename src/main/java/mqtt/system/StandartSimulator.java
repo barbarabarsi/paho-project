@@ -5,7 +5,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 
 import mqtt.entities.Client;
 
-public class Simulator {
+public class StandartSimulator {
 
 	public static void main(String[] args) {
 		
