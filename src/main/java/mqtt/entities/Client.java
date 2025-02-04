@@ -17,6 +17,28 @@ public class Client extends MqttClient {
     	super(brokerURI, clientId, new MemoryPersistence());
     	setCallback(new Callback());
     }
+
+    public void connectWithOptions(boolean cleanSession) {
+    	try {
+    		MqttConnectOptions connectOptions = new MqttConnectOptions();
+    		connectOptions.setCleanSession(cleanSession);
+
+    		connect(connectOptions);
+    		System.out.println("Connected " + getClientId() + " to Mqtt Broker running at: " + getServerURI());
+    	} catch(MqttException e) { Client.printError(e); }	
+    }
+    
+    public void connectWithOptions(boolean cleanSession, String topic, String lastWill, int qos) {
+    	try {
+	    	MqttConnectOptions connectOptions = new MqttConnectOptions();
+	    	connectOptions.setCleanSession(cleanSession);
+	    	connectOptions.setWill(topic, lastWill.getBytes(), qos, cleanSession);
+	    	
+	    	connect(connectOptions);
+	    	System.out.println("Connected " + getClientId() + " to Mqtt Broker running at: " + getServerURI());
+    	} catch(MqttException e) { Client.printError(e); }	
+    
+    }
     
     public void publishMessage(String topic, String messageContent, int qos, boolean retainedFlag) {
     	  

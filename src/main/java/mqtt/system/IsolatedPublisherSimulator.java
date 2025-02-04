@@ -5,7 +5,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 
 import mqtt.entities.Client;
 
-public class Simulator {
+public class IsolatedPublisherSimulator {
 
 	public static void main(String[] args) {
 		
@@ -17,37 +17,18 @@ public class Simulator {
 		try {
 				
 			Client publisher = new Client(broker, "myClientID_Pub");
-			Client subscriber = new Client(broker, "myClientID_Sub");
 			
-	    	subscriber.connectWithOptions(false);
 	    	publisher.connectWithOptions(false, topic, "Saio da vida pra entrar na história.", qos);    	
 	    	System.out.println("Mqtt Clients sucessfully connected.");
 	    	
-	    	 Thread subscribeThread = new Thread(() -> {
-					try {
-						subscriber.subscribeToTopic(topic, qos);
-					} catch (MqttException e) {
-						e.printStackTrace();
-					}
-				});
-		        
-		    subscribeThread.start();
 	        	 
-			for (int i = 1; i <= 5; i++) {
+			for (int i = 1; i <= 6; i++) {
             	publisher.publishMessage(topic, messageContent + " -  Message #" + i, qos, true);
-            	Thread.sleep(1000);
+            	Thread.sleep(100000);
 			}
 			
 			System.out.println("All messages were published.");
 	        
-	       
-	        
-	        try {
-	            subscribeThread.join();
-	        } catch (InterruptedException e) {
-	            e.printStackTrace();
-	        }
-			
 			
 		} 
 		catch(MqttException e) { Client.printError(e);}
