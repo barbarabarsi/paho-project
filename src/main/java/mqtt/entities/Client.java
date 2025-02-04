@@ -18,12 +18,11 @@ public class Client extends MqttClient {
     	setCallback(new Callback());
     }
     
-    public void publishMessage(String topic, String messageContent, int qos) {
+    public void publishMessage(String topic, String messageContent, int qos, boolean retainedFlag) {
     	  
-    	// publish a message
         System.out.println("Mqtt Client: Publishing message: " + messageContent);
         MqttMessage message = new MqttMessage(messageContent.getBytes());
-        //message.setRetained(true);
+        message.setRetained(retainedFlag);
         
         message.setQos(qos);
         
@@ -32,9 +31,12 @@ public class Client extends MqttClient {
 		} catch (MqttException e) {
 			printError(e);
 		}
-        
-        System.out.println("Mqtt Client: successfully published the message.");
     }
+    
+    public void publishMessage(String topic, String messageContent, int qos) {
+    	publishMessage(topic, messageContent, qos, false);
+    }
+    
     
     public void subscribeToTopic(String topic, int qos) throws MqttException {
         
@@ -48,14 +50,7 @@ public class Client extends MqttClient {
     }
     
     public void subscribeToTopic(String topic) throws MqttException {
-      
-    	try {
-			subscribe(topic);
-			System.out.println("Mqtt Client Subscriber: successfully subscribed to topic " + topic);
-		} catch (MqttException e) {
-			e.printStackTrace();
-		}
- 
+    	subscribeToTopic(topic, 0);
     }
     
     public static void printError(MqttException e) {
