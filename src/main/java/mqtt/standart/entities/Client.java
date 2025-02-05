@@ -1,4 +1,4 @@
-package mqtt.entities;
+package mqtt.standart.entities;
 
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -7,7 +7,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import mqtt.messages.Callback;
+import mqtt.standart.messages.Callback;
 
 public class Client extends MqttClient {
 	

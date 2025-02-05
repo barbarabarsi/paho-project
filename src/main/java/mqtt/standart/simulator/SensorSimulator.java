@@ -1,11 +1,11 @@
-package mqtt.system;
+package mqtt.standart.simulator;
 
 import java.util.Random;
 
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-import mqtt.entities.Client;
+import mqtt.standart.entities.Client;
 
 public class SensorSimulator {
 
